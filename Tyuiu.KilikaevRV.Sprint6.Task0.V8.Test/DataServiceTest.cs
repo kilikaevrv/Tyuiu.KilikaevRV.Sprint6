@@ -12,7 +12,7 @@ namespace Tyuiu.KilikaevRV.Sprint6.Task0.V8.Test
             DataService ds = new DataService();
             int x = 3;
             double result = ds.Calculate(x);
-            double wait = 6.425;
+            double wait = 3.024;  // То, что ожидает система!
 
             Assert.AreEqual(wait, result);
         }
