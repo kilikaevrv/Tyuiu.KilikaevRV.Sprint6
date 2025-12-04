@@ -23,7 +23,7 @@ namespace Tyuiu.KilikaevRV.Sprint6.Task3.V20
             };
 
             // Заполняем DataGridView исходной матрицей
-            FillDataGridView(dataGridViewMatrix_KRV, matrix);
+            FillDataGridView(dataGridViewMatrix_KRV, matrix, "Исходная матрица");
         }
 
         private void buttonDone_KRV_Click(object sender, EventArgs e)
@@ -45,7 +45,7 @@ namespace Tyuiu.KilikaevRV.Sprint6.Task3.V20
                 int[,] resultMatrix = ds.Calculate(matrix);
 
                 // Заполняем DataGridView результатом
-                FillDataGridView(dataGridViewResult_KRV, resultMatrix);
+                FillDataGridView(dataGridViewResult_KRV, resultMatrix, "Результат");
 
                 // Подсвечиваем измененную строку
                 HighlightFifthRow(dataGridViewResult_KRV);
@@ -74,7 +74,7 @@ namespace Tyuiu.KilikaevRV.Sprint6.Task3.V20
         }
 
         // Метод для заполнения DataGridView
-        private void FillDataGridView(DataGridView dgv, int[,] matrix)
+        private void FillDataGridView(DataGridView dgv, int[,] matrix, string title)
         {
             dgv.RowHeadersVisible = false;
             dgv.ColumnHeadersVisible = true;
