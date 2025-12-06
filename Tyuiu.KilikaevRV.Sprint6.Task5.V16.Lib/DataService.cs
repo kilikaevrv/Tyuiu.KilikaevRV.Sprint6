@@ -1,57 +1,36 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using tyuiu.cources.programming.interfaces.Sprint6;
-namespace Tyuiu.KilikaevRV.Sprint6.Task5.V16.Lib
+
+namespace Tyuiu.KilkulovaRV.Sprint6.Task5.V16.Lib
 {
     public class DataService : ISprint6Task5V16
     {
+        public int len = 0;
         public double[] LoadFromDataFile(string path)
         {
-            try
+            using (StreamReader reader = new StreamReader(path))
             {
-                // 1. Используем переданный путь
-                if (!File.Exists(path))
+                string line;
+                double[] numsArray = new double[100]; // Временный массив
+                int count = 0;
+
+                while ((line = reader.ReadLine()) != null)
                 {
-                    throw new FileNotFoundException($"Файл не найден: {path}");
-                }
-
-                // 2. Читаем весь файл
-                string fileContent = File.ReadAllText(path).Trim();
-
-                // 3. Разделяем на числа
-                string[] numberStrings = fileContent.Split(
-                    new[] { ' ', ',', ';', '\t', '\n', '\r' },
-                    StringSplitOptions.RemoveEmptyEntries
-                );
-
-                // 4. Преобразуем строки в числа
-                double[] numbers = new double[numberStrings.Length];
-                for (int i = 0; i < numberStrings.Length; i++)
-                {
-                    if (double.TryParse(numberStrings[i], out double num))
+                    // Преобразуем строку в число
+                    if (double.TryParse(line, out double num))
                     {
-                        numbers[i] = num;
-                    }
-                    else
-                    {
-                        throw new FormatException($"Не удалось преобразовать '{numberStrings[i]}' в число в строке {i + 1}");
+                        numsArray[count] = num;
+                        count++;
                     }
                 }
 
-                return numbers;
-            }
-            catch (FileNotFoundException ex)
-            {
-                throw new FileNotFoundException($"Ошибка чтения файла: {ex.Message}", ex);
-            }
-            catch (FormatException ex)
-            {
-                throw new FormatException($"Ошибка формата данных в файле: {ex.Message}", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Непредвиденная ошибка при чтении файла: {ex.Message}", ex);
+                // Создаём массив нужного размера
+                double[] resultArray = new double[count];
+                Array.Copy(numsArray, resultArray, count);
+                len = count;
+
+                return resultArray;
             }
         }
     }
