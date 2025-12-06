@@ -3,94 +3,55 @@ using System.IO;
 using System.Linq;
 using tyuiu.cources.programming.interfaces.Sprint6;
 
-namespace Tyuiu.KilikaevRV.Sprint6.Task5.V16.Lib
+public class DataService : ISprint6Task5V16
 {
-    public class DataService : ISprint6Task5V16
+    public double[] LoadFromDataFile(string path)
     {
-        public double[] LoadFromDataFile(string path)
+        try
         {
-            try
+            // 1. Используем переданный путь, а не жёсткий C:\...
+            if (!File.Exists(path))
             {
-                // Путь к файлу на диске C с правильным именем
-                string filePath = @"C:\DataSprint6\InPutDataFileTask5V16.txt";
-
-                if (!File.Exists(filePath))
-                {
-                    throw new FileNotFoundException($"Файл не найден: {filePath}");
-                }
-
-                // Читаем весь файл
-                string fileContent = File.ReadAllText(filePath).Trim();
-
-                // Разделяем на числа (поддерживаем разные разделители)
-                string[] numberStrings = fileContent.Split(
-                    new[] { ' ', ',', ';', '\t', '\n', '\r' },
-                    StringSplitOptions.RemoveEmptyEntries);
-
-                if (numberStrings.Length == 0)
-                {
-                    return new double[0];
-                }
-
-                // Конвертируем строки в числа
-                double[] result = new double[numberStrings.Length];
-
-                for (int i = 0; i < numberStrings.Length; i++)
-                {
-                    string numStr = numberStrings[i].Trim().Replace('.', ',');
-
-                    if (double.TryParse(numStr, out double number))
-                    {
-                        result[i] = Math.Round(number, 3);
-                    }
-                    else
-                    {
-                        result[i] = 0;
-                    }
-                }
-
-                return result;
+                throw new FileNotFoundException($"Файл не найден: {path}");
             }
-            catch (Exception ex)
+
+            // 2. Читаем весь файл
+            string fileContent = File.ReadAllText(path).Trim();
+
+            // 3. Разделяем на числа (поддерживаем разные разделители)
+            string[] numberStrings = fileContent.Split(
+                new[] { ' ', ',', ';', '\t', '\n', '\r' },
+                StringSplitOptions.RemoveEmptyEntries
+            );
+
+            // 4. Преобразуем строки в числа
+            double[] numbers = new double[numberStrings.Length];
+            for (int i = 0; i < numberStrings.Length; i++)
             {
-                throw new Exception($"Ошибка чтения файла: {ex.Message}", ex);
+                if (double.TryParse(numberStrings[i], out double num))
+                {
+                    numbers[i] = num;
+                }
+                else
+                {
+                    throw new FormatException($"Не удалось преобразовать '{numberStrings[i]}' в число в строке {i + 1}");
+                }
             }
-        }
 
-        public double GetSum(double[] array)
-        {
-            if (array == null || array.Length == 0) return 0;
-            return Math.Round(array.Sum(), 3);
+            return numbers;
         }
-
-        public double GetAverage(double[] array)
+        catch (FileNotFoundException ex)
         {
-            if (array == null || array.Length == 0) return 0;
-            return Math.Round(array.Average(), 3);
+            // Пробрасываем с понятным сообщением
+            throw new FileNotFoundException($"Ошибка чтения файла: {ex.Message}", ex);
         }
-
-        public double GetMax(double[] array)
+        catch (FormatException ex)
         {
-            if (array == null || array.Length == 0) return 0;
-            return Math.Round(array.Max(), 3);
+            throw new FormatException($"Ошибка формата данных в файле: {ex.Message}", ex);
         }
-
-        public double GetMin(double[] array)
+        catch (Exception ex)
         {
-            if (array == null || array.Length == 0) return 0;
-            return Math.Round(array.Min(), 3);
-        }
-
-        public int GetPositiveCount(double[] array)
-        {
-            if (array == null || array.Length == 0) return 0;
-            return array.Count(x => x > 0);
-        }
-
-        public int GetNegativeCount(double[] array)
-        {
-            if (array == null || array.Length == 0) return 0;
-            return array.Count(x => x < 0);
+            throw new Exception($"Непредвиденная ошибка при чтении файла: {ex.Message}", ex);
         }
     }
 }
