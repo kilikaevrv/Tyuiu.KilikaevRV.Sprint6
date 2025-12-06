@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using tyuiu.cources.programming.interfaces.Sprint6;
 
-namespace Tyuiu.KilikaevRV.Sprint6.Task4.V19.Lib;
+namespace Tyuiu.KilikaevRV.Sprint6.Task5.V16.Lib;
 public class DataService : ISprint6Task5V16
 {
     public double[] LoadFromDataFile(string path)
