@@ -4,6 +4,7 @@ using System.Linq;
 using tyuiu.cources.programming.interfaces.Sprint6;
 
 namespace Tyuiu.KilikaevRV.Sprint6.Task5.V16.Lib;
+
 public class DataService : ISprint6Task5V16
 {
     public double[] LoadFromDataFile(string path)
@@ -21,8 +22,8 @@ public class DataService : ISprint6Task5V16
 
             // 3. Разделяем на числа (поддерживаем разные разделители)
             string[] numberStrings = fileContent.Split(
-                new[] { ' ', ',', ';', '\t', '\n', '\r' },
-                StringSplitOptions.RemoveEmptyEntries
+            new[] { ' ', ',', ';', '\t', '\n', '\r' },
+            StringSplitOptions.RemoveEmptyEntries
             );
 
             // 4. Преобразуем строки в числа
