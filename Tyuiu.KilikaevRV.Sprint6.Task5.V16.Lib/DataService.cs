@@ -14,20 +14,24 @@ namespace Tyuiu.KilikaevRV.Sprint6.Task5.V16.Lib
             using (StreamReader reader = new StreamReader(path))
             {
                 string line;
-                double[] numsArray = new double[100];
+                double[] tempArray = new double[100];
                 int count = 0;
 
                 while ((line = reader.ReadLine()) != null)
                 {
                     if (double.TryParse(line, out double num))
                     {
-                        numsArray[count] = num;
-                        count++;
+                        // ФИЛЬТРАЦИЯ: только положительные числа (> 0)
+                        if (num > 0)
+                        {
+                            tempArray[count] = num;
+                            count++;
+                        }
                     }
                 }
 
                 double[] resultArray = new double[count];
-                Array.Copy(numsArray, resultArray, count);
+                Array.Copy(tempArray, resultArray, count);
                 len = count;
 
                 return resultArray;
@@ -88,7 +92,7 @@ namespace Tyuiu.KilikaevRV.Sprint6.Task5.V16.Lib
             return array.Count(num => num < 0);
         }
 
-        // 7. Количество нулей (если нужно)
+        // 7. Количество нулей
         public int GetZeroCount(double[] array)
         {
             if (array == null || array.Length == 0)
