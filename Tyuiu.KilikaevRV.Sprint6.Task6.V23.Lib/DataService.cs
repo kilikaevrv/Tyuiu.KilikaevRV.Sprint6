@@ -9,8 +9,6 @@ namespace Tyuiu.KilikaevRV.Sprint6.Task6.V23.Lib
     {
         public string CollectTextFromFile(string path)
         {
-            string result = "";
-
             try
             {
                 if (!File.Exists(path))
@@ -25,14 +23,17 @@ namespace Tyuiu.KilikaevRV.Sprint6.Task6.V23.Lib
 
                     foreach (string word in words)
                     {
+                        // Ищем 's' или 'S' в слове
                         if (word.IndexOf('s') >= 0 || word.IndexOf('S') >= 0)
                         {
-                            result += word + " ";
+                            // Возвращаем ПЕРВОЕ найденное слово в оригинальном регистре
+                            return word;
                         }
                     }
                 }
 
-                return result.Trim();
+                // Если слово с 's' не найдено
+                return "";
             }
             catch (Exception ex)
             {
